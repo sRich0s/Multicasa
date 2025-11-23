@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienes Raíces MultiCasa</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ENCABEZADO SUPERIOR -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1 class="logo">BIENES RAICES MULTICASA</h1>
+                <p class="subtitle">Tu mejor opción en propiedades</p>
+            </div>
+            <div class="header-right">
+                <button class="call-button">LLAMAR: 1-800-123-4567</button>
+            </div>
+        </header>
+
+        <!-- NAVEGACIÓN SECUNDARIA -->
+        <nav class="secondary-nav">
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#lacompañia">La Compañía</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#requisitos">Requisitos</a></li>
+                <li><a href="#contacto">Contactos</a></li>
+            </ul>
+        </nav>
+
+        <!-- BANNER PRINCIPAL -->
+        <div class="banner">
+            <div class="banner-content">
+                
+                <h2>BIENVENIDO a nuestro sitio WEB de MultiCasa!</h2>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN PRINCIPAL -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#compania">La Compañía</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#requisitos">Requisitos</a></li>
+                <li><a href="#contactos">Contactos</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="main-content">
+            
+            <div class="left-column">
+                
+                <div class="intro-block">
+                    <img src="https://www.globaltyinvestment.com/uploads/mls-listings/2025/1/16/1313091/ChaOvfGWwyEGxe5fojE36hA4-Nbivfsm2ELX1AUZ7f4.jpeg.webp" alt="Casa" class="intro-image">
+                    <h3>Bienvenido a MultiCasa</h3>
+                    <p>Hola. En este tutorial te mostraremos cómo crear un sitio web profesional de bienes raíces. Nuestra plataforma ofrece las mejores propiedades del mercado con precios competitivos y un excelente servicio. Estamos comprometidos a ayudarte a encontrar la casa de tus sueños.</p>
+                </div>
+
+                <div class="services-section">
+                    <h3>SERVICIOS DESTACADOS</h3>
+                    <div class="services-grid">
+                        <div class="service-block">
+                            <h4>Compra de Propiedades</h4>
+                            <p>Encuentra las mejores opciones de compra en el mercado inmobiliario. Contamos con un amplio catálogo de propiedades disponibles.</p>
+                        </div>
+                        <div class="service-block">
+                            <h4>Venta de Propiedades</h4>
+                            <p>Vende tu propiedad con nosotros. Ofrecemos asesoría profesional y marketing digital para obtener el mejor precio.</p>
+                        </div>
+                        <div class="service-block">
+                            <h4>Construcción y Desarrollo</h4>
+                            <p>Proyectos de construcción de calidad. Trabajamos con los mejores constructores para garantizar excelencia en cada proyecto.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ICONOS/ENLACES INFERIORES -->
+                <div class="bottom-links">
+                    <a href="#faq" class="link-item">
+                        <span class="icon">❓</span>
+                        <p>Preguntas Frecuentes</p>
+                    </a>
+                    <a href="#iso" class="link-item">
+                        <span class="icon">✓</span>
+                        <p>ISO-9001-2000</p>
+                    </a>
+                    <a href="#seguridad" class="link-item">
+                        <span class="icon">🔒</span>
+                        <p>Seguridad</p>
+                    </a>
+                    <a href="#soporte" class="link-item">
+                        <span class="icon">📞</span>
+                        <p>Soporte 24/7</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="right-column">
+                
+                <div class="sidebar-menu">
+                    <ul>
+                        <li><a href="#compra">COMPRA</a></li>
+                        <li><a href="#construir">CONSTRUIR</a></li>
+                        <li><a href="#venta">VENTA</a></li>
+                        <li><a href="#mudanzas">MUDANZAS</a></li>
+                        <li><a href="#seguros">SEGUROS</a></li>
+                        <li><a href="#contactos">CONTACTOS</a></li>
+                    </ul>
+                </div>
+
+                <!-- FORMULARIO DE BÚSQUEDA -->
+                <div class="search-form">
+                    <h4>ENCUENTRA TU FUTURA PROPIEDAD 🔎</h4>
+                    <form id="searchForm">
+                        <div class="form-group">
+                            <label for="tipo">Tipo de Propiedad:</label>
+                            <select id="tipo" name="tipo">
+                                <option value="">Seleccionar...</option>
+                                <option value="casa">Casa</option>
+                                <option value="apartamento">Apartamento</option>
+                                <option value="terreno">Terreno</option>
+                                <option value="comercial">Comercial</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ciudad">Ciudad:</label>
+                            <select id="ciudad" name="ciudad">
+                                <option value="">Seleccionar...</option>
+                                <option value="miami">Miami</option>
+                                <option value="orlando">Orlando</option>
+                                <option value="tampa">Tampa</option>
+                                <option value="jacksonville">Jacksonville</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="precio">Rango de Precio:</label>
+                            <select id="precio" name="precio">
+                                <option value="">Seleccionar...</option>
+                                <option value="0-100000">$0 - $100,000</option>
+                                <option value="100000-300000">$100,000 - $300,000</option>
+                                <option value="300000-500000">$300,000 - $500,000</option>
+                                <option value="500000+">$500,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="habitaciones">Habitaciones:</label>
+                            <select id="habitaciones" name="habitaciones">
+                                <option value="">Seleccionar...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4+">4+</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="search-button">BUSCAR</button>
+                    </form>
+                </div>
+
+                <!-- INFORMACIÓN DE ÚLTIMA HORA -->
+                <div class="news-block">
+                    <h4>INFORMACIÓN DE ÚLTIMA HORA</h4>
+                    <ul class="news-list">
+                        <li><a href="#news1">Nuevas propiedades disponibles en Miami</a></li>
+                        <li><a href="#news2">Tasas de interés en mínimos históricos</a></li>
+                        <li><a href="#news3">Promoción especial en apartamentos</a></li>
+                        <li><a href="#news4">Seminario gratuito de inversión inmobiliaria</a></li>
+                        <li><a href="#news5">Certificación ISO renovada</a></li>
+                    </ul>
+                </div>
+
+                <!-- CONTADOR DE VISITAS -->
+                <div class="visitor-counter">
+                    <div class="counter-item">
+                        <span class="counter-label">Conectados:</span>
+                        <span class="counter-value" id="connected">01</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-label">Visitas:</span>
+                        <span class="counter-value" id="visits">07890</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PIE DE PÁGINA -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>BIENES RAICES MULTICASA</h3>
+                </div>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#compra">Compra</a></li>
+                        <li><a href="#construir">Construir</a></li>
+                        <li><a href="#venta">Venta</a></li>
+                        <li><a href="#mudanzas">Mudanzas</a></li>
+                        <li><a href="#seguros">Seguros</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BIENES RAICES MULTICASA. Todos los derechos reservados por JJDreams y Don Donas.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
