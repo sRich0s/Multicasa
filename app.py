@@ -13,7 +13,7 @@ app = Flask(__name__, static_folder=None)
 @app.route("/", methods=["GET"])
 def index():
     
-    return send_from_directory(str(ROOT), "PWeb/main.html")
+    return send_from_directory(str(ROOT), "HTML/main.html")
 
 
 @app.route("/<path:filename>", methods=["GET"])
