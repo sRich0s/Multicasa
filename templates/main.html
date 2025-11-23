@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienes Raíces MultiCasa</title>
-    <link rel="stylesheet" href="CSS/main.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
 </head>
 <body>
     <div class="container">
@@ -227,12 +227,8 @@
                 </div>
                 <nav class="footer-nav">
                     <ul>
-                        <li><a href="#iniciosecion">Inicio</a></li>
-                        <!--<li><a href="#compra">Compra</a></li>
-                        <li><a href="#construir">Construir</a></li>
-                        <li><a href="#venta">Venta</a></li>
-                        <li><a href="#mudanzas">Mudanzas</a></li>
-                        <li><a href="#seguros">Seguros</a></li>-->
+                        <li><a href="/admin-login">🔐 Acceso Administrador</a></li>
+                        
                     </ul>
                 </nav>
             </div>
@@ -242,6 +238,6 @@
         </footer>
     </div>
 
-    <script src="JS/main.js"></script>
+    <script src="{{ url_for('static', filename='JS/main.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Bienes Raíces MultiCasa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin-styles.css') }}">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- SIDEBAR -->
+        <div class="admin-sidebar">
+            <h2>PANEL ADMIN</h2>
+            <ul>
+                <li><a href="#" class="menu-link active" data-section="dashboard">📊 Dashboard</a></li>
+                <li><a href="#" class="menu-link" data-section="viviendas">🏠 Gestionar Viviendas</a></li>
+                <li><a href="#" class="menu-link" data-section="noticias">📰 Gestionar Noticias</a></li>
+                <li><a href="#" class="menu-link" data-section="contactos">📧 Contactos Recibidos</a></li>
+                <li><a href="#" class="menu-link" data-section="transacciones">💰 Transacciones</a></li>
+                <li class="logout-btn">
+                    <a href="#" id="logoutBtn">🚪 Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="admin-main">
+            <!-- HEADER -->
+            <div class="admin-header">
+                <h1>Panel de Administración</h1>
+                <div class="user-info">
+                    <p>Bienvenido, <strong id="adminUsername">Admin</strong></p>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div id="dashboard" class="content-section active">
+                <div class="section-title">
+                    <h2>📊 Dashboard</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="form-container" style="text-align: center;">
+                        <h3 style="color: #003366; margin-top: 0;">Total Viviendas</h3>
+                        <p style="font-size: 32px; color: #ff6600; margin: 10px 0;"><strong id="totalViviendas">0</strong></p>
+                    </div>
+                    <div class="form-container" style="text-align: center;">
+                        <h3 style="color: #003366; margin-top: 0;">Viviendas en Compra</h3>
+                        <p style="font-size: 32px; color: #00aa00; margin: 10px 0;"><strong id="totalCompra">0</strong></p>
+                    </div>
+                    <div class="form-container" style="text-align: center;">
+                        <h3 style="color: #003366; margin-top: 0;">Viviendas en Venta</h3>
+                        <p style="font-size: 32px; color: #cc0000; margin: 10px 0;"><strong id="totalVenta">0</strong></p>
+                    </div>
+                    <div class="form-container" style="text-align: center;">
+                        <h3 style="color: #003366; margin-top: 0;">Contactos Recibidos</h3>
+                        <p style="font-size: 32px; color: #00ccff; margin: 10px 0;"><strong id="totalContactos">0</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GESTIONAR VIVIENDAS -->
+            <div id="viviendas" class="content-section">
+                <div class="section-title">
+                    <h2>🏠 Gestionar Viviendas</h2>
+                </div>
+
+                <div class="form-container">
+                    <h3 style="color: #003366; margin-top: 0;">Agregar Nueva Vivienda</h3>
+                    <form id="viviendasForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vivTitulo">Título:</label>
+                                <input type="text" id="vivTitulo" required placeholder="Ej: Casa moderna en Miami">
+                            </div>
+                            <div class="form-group">
+                                <label for="vivPrecio">Precio ($):</label>
+                                <input type="number" id="vivPrecio" required placeholder="Ej: 250000">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vivUbicacion">Ubicación:</label>
+                                <input type="text" id="vivUbicacion" required placeholder="Ej: Miami, Florida">
+                            </div>
+                            <div class="form-group">
+                                <label for="vivHabitaciones">Habitaciones:</label>
+                                <input type="number" id="vivHabitaciones" required placeholder="Ej: 3">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vivBanos">Baños:</label>
+                                <input type="number" id="vivBanos" required placeholder="Ej: 2">
+                            </div>
+                            <div class="form-group">
+                                <label for="vivArea">Área (m²):</label>
+                                <input type="number" id="vivArea" required placeholder="Ej: 150">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vivTipo">Tipo de Transacción:</label>
+                                <select id="vivTipo" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="compra">Compra</option>
+                                    <option value="venta">Venta</option>
+                                    <option value="disponible">Disponible</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vivEstado">Estado:</label>
+                                <select id="vivEstado" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="disponible">Disponible</option>
+                                    <option value="vendida">Vendida</option>
+                                    <option value="alquilada">Alquilada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="vivDescripcion">Descripción:</label>
+                                <textarea id="vivDescripcion" required placeholder="Describe la propiedad..."></textarea>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">Agregar Vivienda</button>
+                            <button type="reset" class="btn btn-secondary">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <h3 style="color: #003366; margin-top: 0;">Listado de Viviendas</h3>
+                    <table id="viviendasTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Precio</th>
+                                <th>Ubicación</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="viviendasBody">
+                            <tr>
+                                <td colspan="7" class="empty-state">No hay viviendas registradas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GESTIONAR NOTICIAS -->
+            <div id="noticias" class="content-section">
+                <div class="section-title">
+                    <h2>📰 Gestionar Noticias</h2>
+                </div>
+
+                <div class="form-container">
+                    <h3 style="color: #003366; margin-top: 0;">Agregar Nueva Noticia</h3>
+                    <form id="noticiasForm">
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="notTitulo">Título:</label>
+                                <input type="text" id="notTitulo" required placeholder="Ej: Nuevas propiedades disponibles">
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="notContenido">Contenido:</label>
+                                <textarea id="notContenido" required placeholder="Escribe el contenido de la noticia..."></textarea>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">Agregar Noticia</button>
+                            <button type="reset" class="btn btn-secondary">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <h3 style="color: #003366; margin-top: 0;">Listado de Noticias</h3>
+                    <table id="noticiasTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Contenido</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="noticiasBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">No hay noticias registradas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONTACTOS RECIBIDOS -->
+            <div id="contactos" class="content-section">
+                <div class="section-title">
+                    <h2>📧 Contactos Recibidos</h2>
+                </div>
+
+                <div class="table-container">
+                    <table id="contactosTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Mensaje</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactosBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">No hay contactos registrados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TRANSACCIONES -->
+            <div id="transacciones" class="content-section">
+                <div class="section-title">
+                    <h2>💰 Gestionar Transacciones</h2>
+                </div>
+
+                <div class="form-container">
+                    <h3 style="color: #003366; margin-top: 0;">Cambiar Estado de Vivienda</h3>
+                    <form id="transaccionesForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tranVivienda">Seleccionar Vivienda:</label>
+                                <select id="tranVivienda" required>
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tranTipo">Cambiar a:</label>
+                                <select id="tranTipo" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="compra">Compra</option>
+                                    <option value="venta">Venta</option>
+                                    <option value="disponible">Disponible</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">Actualizar Transacción</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <h3 style="color: #003366; margin-top: 0;">Historial de Transacciones</h3>
+                    <table id="transaccionesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Vivienda</th>
+                                <th>Tipo Anterior</th>
+                                <th>Tipo Nuevo</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaccionesBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">No hay transacciones registradas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/admin-panel.js') }}"></script>
+</body>
+</html>

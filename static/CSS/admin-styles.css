@@ -1,0 +1,478 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* ============================================
+   LOGIN PAGE
+   ============================================ */
+
+.login-container {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #003366 0%, #004488 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-box {
+    background: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-box h1 {
+    color: #003366;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.login-box .subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #003366;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #00ccff;
+    box-shadow: 0 0 5px rgba(0, 204, 255, 0.3);
+}
+
+.login-button {
+    width: 100%;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.login-button:hover {
+    background-color: #ff5500;
+}
+
+.error-message {
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link a {
+    color: #003366;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+}
+
+.back-link a:hover {
+    color: #00ccff;
+}
+
+.logo-login {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-login h2 {
+    color: #003366;
+    font-size: 20px;
+    margin: 0;
+}
+
+.logo-login p {
+    color: #00ccff;
+    font-size: 12px;
+    margin: 5px 0 0 0;
+}
+
+/* ============================================
+   ADMIN PANEL
+   ============================================ */
+
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background: linear-gradient(to bottom, #003366, #004488);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.admin-sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #00ccff;
+    padding-bottom: 15px;
+}
+
+.admin-sidebar ul {
+    list-style: none;
+}
+
+.admin-sidebar li {
+    margin-bottom: 10px;
+}
+
+.admin-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 12px 15px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.admin-sidebar a:hover,
+.admin-sidebar a.active {
+    background-color: #00ccff;
+    color: #003366;
+    font-weight: bold;
+}
+
+.logout-btn {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #004488;
+}
+
+.logout-btn a {
+    background-color: #ff6600;
+    text-align: center;
+}
+
+.logout-btn a:hover {
+    background-color: #ff5500;
+    color: white;
+}
+
+.admin-main {
+    margin-left: 250px;
+    flex: 1;
+    padding: 20px;
+}
+
+.admin-header {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header h1 {
+    color: #003366;
+    margin: 0;
+    font-size: 24px;
+}
+
+.user-info {
+    font-size: 13px;
+    color: #666;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.section-title {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 5px solid #00ccff;
+}
+
+.section-title h2 {
+    color: #003366;
+    margin: 0;
+    font-size: 22px;
+}
+
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-row.full {
+    grid-template-columns: 1fr;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: #003366;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #00ccff;
+    box-shadow: 0 0 5px rgba(0, 204, 255, 0.3);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: #ff6600;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #ff5500;
+}
+
+.btn-secondary {
+    background-color: #ddd;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ccc;
+}
+
+.btn-danger {
+    background-color: #cc0000;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #990000;
+}
+
+.btn-success {
+    background-color: #00aa00;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #008800;
+}
+
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+table thead {
+    background-color: #003366;
+    color: white;
+}
+
+table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-compra {
+    background-color: #ccffcc;
+    color: #009900;
+}
+
+.status-venta {
+    background-color: #ffcccc;
+    color: #cc0000;
+}
+
+.status-disponible {
+    background-color: #ccddff;
+    color: #003366;
+}
+
+.message-box {
+    background-color: #e8f4f8;
+    border-left: 4px solid #00ccff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.message-box.success {
+    background-color: #e8f8e8;
+    border-left-color: #00aa00;
+}
+
+.message-box.error {
+    background-color: #f8e8e8;
+    border-left-color: #cc0000;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .admin-main {
+        margin-left: 0;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

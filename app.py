@@ -1,35 +1,24 @@
 from pathlib import Path
 import os
-from flask import Flask, send_from_directory, abort
 
-ROOT = Path(__file__).parent.resolve()
-ALLOWED_EXT = {
-    "html", "css", "js", "png", "jpg", "jpeg", "webp", "cur", "ico", "svg", "json"
-}
+from flask import Flask, render_template
 
-app = Flask(__name__, static_folder=None)
+app = Flask(__name__, 
+            template_folder='templates',
+            static_folder='static',
+            static_url_path='/static')
 
-
-@app.route("/", methods=["GET"])
+@app.route('/')
 def index():
-    
-    return send_from_directory(str(ROOT), "HTML/main.html")
+    return render_template('main.html')
 
+@app.route('/admin-login')
+def admin_login():
+    return render_template('admin-login.html')
 
-@app.route("/<path:filename>", methods=["GET"])
-def static_files(filename: str):
-    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
-    if ext not in ALLOWED_EXT:
-        return abort(404)
-    path = (ROOT / filename).resolve()
-    
-    if not str(path).startswith(str(ROOT)):
-        return abort(403)
-    if not path.exists():
-        return abort(404)
-    return send_from_directory(str(ROOT), filename)
+@app.route('/admin-panel')
+def admin_panel():
+    return render_template('admin-panel.html')
 
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run(debug=True)
