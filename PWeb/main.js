@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Obtener o crear contador de visitas en localStorage
     let visits = localStorage.getItem('visits');
     if (!visits) {
         visits = 7890;
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('visits', visits);
     document.getElementById('visits').textContent = String(visits).padStart(5, '0');
 
-    // Simular usuarios conectados
     const connected = Math.floor(Math.random() * 50) + 1;
     document.getElementById('connected').textContent = String(connected).padStart(2, '0');
 
@@ -43,11 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            if (href !== '#' && document.querySelector(href)) {
-                e.preventDefault();
-                document.querySelector(href).scrollIntoView({
-                    behavior: 'smooth'
-                });
+            if (href !== '#') {
+                const id = href.slice(1);
+                const target = document.getElementById(id);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         });
     });

@@ -42,7 +42,7 @@
         <nav class="main-nav">
             <ul>
                 <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#compania">La Compañía</a></li>
+                <li><a href="#lacompania">La Compañía</a></li>
                 <li><a href="#servicios">Servicios</a></li>
                 <li><a href="#requisitos">Requisitos</a></li>
                 <li><a href="#contactos">Contactos</a></li>
@@ -56,7 +56,7 @@
                 
                 <div class="intro-block">
                     <img src="https://www.globaltyinvestment.com/uploads/mls-listings/2025/1/16/1313091/ChaOvfGWwyEGxe5fojE36hA4-Nbivfsm2ELX1AUZ7f4.jpeg.webp" alt="Casa" class="intro-image">
-                    <h3>Bienvenido a MultiCasa</h3>
+                    <h3 id="lacompañia">Bienvenido a MultiCasa</h3>
                     <p>Hola, ¡Bienvenidos!.  Nuestra plataforma ofrece las mejores propiedades del mercado con precios competitivos y un excelente servicio. Estamos comprometidos a ayudarte a encontrar la casa de tus sueños.<br>
                         Ademas con nuestros muchos años de experiencia y nuestras bastas viviendas de lujo en las mejores ciudades, con la garantia de que se ubican en las mejores zonas de la ciudad contamos con excelentes referencias en el mercado.<br><br>
                         <em>"Adoro a estos chicos, son los mejores en el negocio inmobiliario.Me ayudaron a asalt... a recuperar mi casa cerca de los bellos puertos de Vice City y son expertos en lo que hacer. ¡Gracias Multicasa!" <br>
@@ -66,7 +66,7 @@
                         </p>
                 </div>
 
-                <div class="services-section">
+                <div class="services-section" id="servicios">
                     <h3>SERVICIOS DESTACADOS</h3>
                     <div class="services-grid">
                         <div class="service-block">
@@ -102,6 +102,32 @@
                         <span class="icon">📞</span>
                         <p>Soporte 24/7</p>
                     </a>
+                </div>
+
+                <!-- NUEVA SECCIÓN: REQUISITOS -->
+                <div class="requirements-section" id="requisitos">
+                    <h3>REQUISITOS</h3>
+                    <p>Para gestionar una propiedad con nosotros por favor prepara lo siguiente:</p>
+                    <ul>
+                        <li>Documento de identidad vigente.</li>
+                        <li>Comprobante de domicilio.</li>
+                        <li>Documentos de la propiedad (si aplica).</li>
+                        <li>Formulario de solicitud completado.</li>
+                    </ul>
+                </div>
+
+                <!-- NUEVA SECCIÓN: CONTACTOS -->
+                <div class="contacts-section" id="contactos">
+                    <h3>CONTACTOS</h3>
+                    <p>Tel: <a href="tel:18001234567">1-800-123-4567</a></p>
+                    <p>Email: <a href="mailto:info@multicasa.mx">info@multicasa.mx</a></p>
+                    <p>Dirección: Av. NewTown 477, San Francisco</p>
+                    <form id="contactForm" style="margin-top:10px;">
+                        <input type="text" id="contactName" placeholder="Tu nombre" required style="width:100%;padding:6px;margin-bottom:6px;">
+                        <input type="email" id="contactEmail" placeholder="Tu correo" required style="width:100%;padding:6px;margin-bottom:6px;">
+                        <textarea id="contactMessage" placeholder="Mensaje" rows="3" style="width:100%;padding:6px;margin-bottom:6px;"></textarea>
+                        <button type="submit" class="search-button" style="width:auto;padding:8px 12px;">ENVIAR</button>
+                    </form>
                 </div>
             </div>
 
@@ -167,7 +193,7 @@
                     </form>
                 </div>
 
-                <!-- INFORMACIÓN DE ÚLTIMA HORA -->
+                <!-- Noticias -->
                 <div class="news-block">
                     <h4>INFORMACIÓN DE ÚLTIMA HORA</h4>
                     <ul class="news-list">
