@@ -147,50 +147,40 @@
 
                 <!-- FORMULARIO DE BÚSQUEDA -->
                 <div class="search-form">
-                    <h4>ENCUENTRA TU FUTURA PROPIEDAD 🔎</h4>
+                    <h4>FILTRAR VIVIENDAS 🔎</h4>
                     <form id="searchForm">
-                        <div class="form-group">
-                            <label for="tipo">Tipo de Propiedad:</label>
-                            <select id="tipo" name="tipo">
-                                <option value="">Seleccionar...</option>
-                                <option value="casa">Casa</option>
-                                <option value="apartamento">Apartamento</option>
-                                <option value="terreno">Terreno</option>
-                                <option value="comercial">Comercial</option>
+                        <div class="form-group uniform-field">
+                            <label for="fEstado">Estado:</label>
+                            <select id="fEstado" name="fEstado">
+                                <option value="">Cualquiera</option>
+                                <option value="disponible">Disponible</option>
+                                <option value="vendida">Vendida</option>
+                                <option value="alquilada">Alquilada</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="ciudad">Ciudad:</label>
-                            <select id="ciudad" name="ciudad">
-                                <option value="">Seleccionar...</option>
-                                <option value="miami">Miami</option>
-                                <option value="orlando">Orlando</option>
-                                <option value="tampa">Tampa</option>
-                                <option value="jacksonville">Jacksonville</option>
-                            </select>
+                        <div class="form-group uniform-field">
+                            <label for="fMinPrecio">Precio Mínimo ($):</label>
+                            <input type="number" id="fMinPrecio" name="fMinPrecio" min="0" placeholder="0">
                         </div>
-                        <div class="form-group">
-                            <label for="precio">Rango de Precio:</label>
-                            <select id="precio" name="precio">
-                                <option value="">Seleccionar...</option>
-                                <option value="0-100000">$0 - $100,000</option>
-                                <option value="100000-300000">$100,000 - $300,000</option>
-                                <option value="300000-500000">$300,000 - $500,000</option>
-                                <option value="500000+">$500,000+</option>
-                            </select>
+                        <div class="form-group uniform-field">
+                            <label for="fMaxPrecio">Precio Máximo ($):</label>
+                            <input type="number" id="fMaxPrecio" name="fMaxPrecio" min="0" placeholder="500000">
                         </div>
-                        <div class="form-group">
-                            <label for="habitaciones">Habitaciones:</label>
-                            <select id="habitaciones" name="habitaciones">
-                                <option value="">Seleccionar...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4+">4+</option>
-                            </select>
+                        <div class="form-group uniform-field">
+                            <label for="fHabitaciones">Habitaciones mín.:</label>
+                            <input type="number" id="fHabitaciones" name="fHabitaciones" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fBanos">Baños mín.:</label>
+                            <input type="number" id="fBanos" name="fBanos" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fArea">Área mín. (m²):</label>
+                            <input type="number" id="fArea" name="fArea" min="0" placeholder="0">
                         </div>
                         <button type="submit" class="search-button">BUSCAR</button>
                     </form>
+                    <div id="searchResults" style="margin-top:15px; font-size:13px;"></div>
                 </div>
 
                 <!-- Noticias -->

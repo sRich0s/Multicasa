@@ -593,3 +593,34 @@ body {
         border-left-width: 4px;
     }
 }
+
+@media (max-width: 780px) {
+  .search-form form { grid-template-columns: 1fr 1fr; }
+  #searchResults ul { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .search-form form { grid-template-columns: 1fr; }
+  .search-form { padding:12px; }
+  .search-button { width:100%; }
+}
+
+/* Campos de formulario uniformes */
+.uniform-field label { font-weight:bold; color:#003366; margin-bottom:4px; display:block; }
+.uniform-field input, .uniform-field select { width:100%; padding:8px 10px; border:2px solid #ddd; border-radius:5px; font-size:13px; transition:border-color .3s, box-shadow .3s; background:#fafafa; }
+.uniform-field input:focus, .uniform-field select:focus { outline:none; border-color:#00ccff; box-shadow:0 0 4px rgba(0,204,255,.3); background:#fff; }
+.search-form { background:#ffffff; border:1px solid #e0e0e0; border-radius:8px; padding:15px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+search-form h4 { margin-top:0; color:#003366; }
+search-form .form-group { margin-bottom:12px; }
+.search-button { background:#ff6600; color:#fff; border:none; padding:10px 18px; font-size:13px; font-weight:bold; border-radius:5px; cursor:pointer; transition:background .3s; }
+.search-button:hover { background:#ff5500; }
+
+/* Estilos para el formulario de búsqueda y resultados */
+.search-form form { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:12px; }
+.search-form .uniform-field { display:flex; flex-direction:column; }
+#searchResults ul { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:12px; }
+#searchResults li { margin:0 !important; }
+#searchResults li strong { color:#003366; }
+
+/* Animación hover resultado */
+#searchResults li { transition:background .25s, transform .25s; }
+#searchResults li:hover { background:#eef9ff !important; transform:translateY(-2px); }

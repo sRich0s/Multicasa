@@ -14,18 +14,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejar formulario de búsqueda
     const searchForm = document.getElementById('searchForm');
     if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
+        searchForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const tipo = document.getElementById('tipo').value;
-            const ciudad = document.getElementById('ciudad').value;
-            const precio = document.getElementById('precio').value;
-            const habitaciones = document.getElementById('habitaciones').value;
-
-            if (tipo && ciudad && precio && habitaciones) {
-                alert(`Búsqueda realizada:\nTipo: ${tipo}\nCiudad: ${ciudad}\nPrecio: ${precio}\nHabitaciones: ${habitaciones}`);
-            } else {
-                alert('Por favor completa todos los campos');
-            }
+            // Redirigir a página de mapa con parámetros (estado, precios, etc.)
+            const params = new URLSearchParams({
+                estado: document.getElementById('fEstado')?.value || '',
+                minPrecio: document.getElementById('fMinPrecio')?.value || '',
+                maxPrecio: document.getElementById('fMaxPrecio')?.value || '',
+                habitaciones: document.getElementById('fHabitaciones')?.value || '',
+                banos: document.getElementById('fBanos')?.value || '',
+                area: document.getElementById('fArea')?.value || ''
+            });
+            window.location.href = '/mapa-viviendas?' + params.toString();
         });
     }
 
@@ -51,6 +51,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('contactName').value.trim();
+            const correo = document.getElementById('contactEmail').value.trim();
+            const mensaje = document.getElementById('contactMessage').value.trim();
+            if (!nombre || !correo || !mensaje) {
+                alert('Completa todos los campos');
+                return;
+            }
+            try {
+                const resp = await fetch('/api/contactos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre, correo, mensaje })
+                });
+                if (!resp.ok) throw new Error('Error en el servidor');
+                const data = await resp.json();
+                alert('Contacto enviado. ID: ' + data.id);
+                contactForm.reset();
+            } catch (err) {
+                alert('No se pudo enviar el contacto: ' + err.message);
+            }
+        });
+    }
 });
 
 
