@@ -45,15 +45,7 @@
               <option value="alquilada">Alquilada</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="mfTipo">Tipo</label>
-            <select id="mfTipo">
-              <option value="">Cualquiera</option>
-              <option value="compra">Compra</option>
-              <option value="venta">Venta</option>
-              <option value="disponible">Disponible</option>
-            </select>
-          </div>
+
           <div class="form-group">
             <label for="mfMinPrecio">Precio Mín ($)</label>
             <input type="number" id="mfMinPrecio" min="0" placeholder="0" />
@@ -85,10 +77,10 @@
     let map; let markersLayer=L.layerGroup();
     function initMap(){ map=L.map('map').setView([25.7617,-80.1918],10); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map); markersLayer.addTo(map); }
     function fetchViviendas(){ return fetch('/api/viviendas').then(r=>r.json()); }
-    function filtrar(viviendas){ const estado=mfEstado.value; const tipo=mfTipo.value; const minP=parseFloat(mfMinPrecio.value)||0; const maxP=parseFloat(mfMaxPrecio.value)||Infinity; const hab=parseInt(mfHabitaciones.value)||0; const ban=parseInt(mfBanos.value)||0; const area=parseInt(mfArea.value)||0; return viviendas.filter(v=> (estado? v.estado===estado : true) && (tipo? v.tipo===tipo : true) && v.precio>=minP && v.precio<=maxP && v.habitaciones>=hab && v.banos>=ban && v.area>=area); }
-    function renderMarkers(viviendas){ markersLayer.clearLayers(); viviendas.forEach(v=>{ const m=L.marker([v.lat,v.lng]); m.bindPopup(`<strong>${v.titulo}</strong><br>Precio: $${parseFloat(v.precio).toLocaleString()}<br>Estado: ${v.estado} | Tipo: ${v.tipo}<br>Hab: ${v.habitaciones} · Baños: ${v.banos} · Área: ${v.area} m²`); markersLayer.addLayer(m); }); }
+    function filtrar(viviendas){ const estado=mfEstado.value;  const minP=parseFloat(mfMinPrecio.value)||0; const maxP=parseFloat(mfMaxPrecio.value)||Infinity; const hab=parseInt(mfHabitaciones.value)||0; const ban=parseInt(mfBanos.value)||0; const area=parseInt(mfArea.value)||0; return viviendas.filter(v=> (estado? v.estado===estado : true)  && v.precio>=minP && v.precio<=maxP && v.habitaciones>=hab && v.banos>=ban && v.area>=area); }
+    function renderMarkers(viviendas){ markersLayer.clearLayers(); viviendas.forEach(v=>{ const m=L.marker([v.lat,v.lng]); m.bindPopup(`<strong>${v.titulo}</strong><br>Precio: $${parseFloat(v.precio).toLocaleString()}<br>Estado: ${v.estado} <br>Hab: ${v.habitaciones} · Baños: ${v.banos} · Área: ${v.area} m²`); markersLayer.addLayer(m); }); }
     async function actualizar(){ const all=await fetchViviendas(); const f=filtrar(all); renderMarkers(f); }
-    function precargarParametros(){ const usp=new URLSearchParams(location.search); mfEstado.value=usp.get('estado')||''; mfTipo.value=usp.get('tipo')||''; mfMinPrecio.value=usp.get('minPrecio')||''; mfMaxPrecio.value=usp.get('maxPrecio')||''; mfHabitaciones.value=usp.get('habitaciones')||''; mfBanos.value=usp.get('banos')||''; mfArea.value=usp.get('area')||''; }
+    function precargarParametros(){ const usp=new URLSearchParams(location.search); mfEstado.value=usp.get('estado')||''; mfMinPrecio.value=usp.get('minPrecio')||''; mfMaxPrecio.value=usp.get('maxPrecio')||''; mfHabitaciones.value=usp.get('habitaciones')||''; mfBanos.value=usp.get('banos')||''; mfArea.value=usp.get('area')||''; }
     document.addEventListener('DOMContentLoaded', ()=>{ initMap(); precargarParametros(); actualizar(); mapFilters.addEventListener('submit', e=>{ e.preventDefault(); actualizar(); }); });
   </script>
 </body>
