@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Bienes Raíces MultiCasa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin-styles.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <style>#mapSelector { background:#f9f9f9; }</style>
 </head>
 <body>
     <div class="admin-container">
@@ -77,27 +79,30 @@
                                 <input type="number" id="vivPrecio" required placeholder="Ej: 250000">
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="vivUbicacion">Ubicación:</label>
-                                <input type="text" id="vivUbicacion" required placeholder="Ej: Miami, Florida">
+                        <div class="form-row full">
+                            <div class="form-group" style="width:100%">
+                                <label>Ubicación en el mapa (clic para colocar marcador):</label>
+                                <div id="mapSelector" style="height:300px; border:1px solid #ccc; border-radius:6px; margin-top:6px;"></div>
+                                <small style="display:block; margin-top:6px; color:#555">Selecciona un punto. Se guardarán latitud y longitud automáticamente.</small>
+                                <input type="hidden" id="vivLat" required>
+                                <input type="hidden" id="vivLng" required>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="vivHabitaciones">Habitaciones:</label>
                                 <input type="number" id="vivHabitaciones" required placeholder="Ej: 3">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group">
                                 <label for="vivBanos">Baños:</label>
                                 <input type="number" id="vivBanos" required placeholder="Ej: 2">
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="vivArea">Área (m²):</label>
                                 <input type="number" id="vivArea" required placeholder="Ej: 150">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group">
                                 <label for="vivTipo">Tipo de Transacción:</label>
                                 <select id="vivTipo" required>
@@ -107,6 +112,8 @@
                                     <option value="disponible">Disponible</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="vivEstado">Estado:</label>
                                 <select id="vivEstado" required>
@@ -138,7 +145,7 @@
                                 <th>ID</th>
                                 <th>Título</th>
                                 <th>Precio</th>
-                                <th>Ubicación</th>
+                                <th>Coordenadas (Lat,Lng)</th>
                                 <th>Tipo</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
@@ -284,6 +291,8 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='JS/admin-panel.js') }}"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script>window.addEventListener('load',()=>{if(!window.L){console.warn('Leaflet no cargó, intentando fallback');var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';s.onload=()=>console.log('Leaflet fallback listo');document.head.appendChild(s);} });</script>
+    <script src="{{ url_for('static', filename='JS/admin-panel.js') }}" defer></script>
 </body>
 </html>

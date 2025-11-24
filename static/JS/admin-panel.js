@@ -58,12 +58,6 @@ class Database {
         return JSON.parse(localStorage.getItem('viviendas'));
     }
 
-    deleteVivienda(id) {
-        let viviendas = JSON.parse(localStorage.getItem('viviendas'));
-        viviendas = viviendas.filter(v => v.id !== id);
-        localStorage.setItem('viviendas', JSON.stringify(viviendas));
-    }
-
     updateVivienda(id, data) {
         let viviendas = JSON.parse(localStorage.getItem('viviendas'));
         viviendas = viviendas.map(v => v.id === id ? { ...v, ...data } : v);
@@ -139,34 +133,52 @@ const db = new Database();
 // ============================================
 // NAVEGACIÓN DEL PANEL
 // ============================================
-
+// Eliminar duplicado y usar un único listener que también maneja el mapa
+function handleSectionNavigation(section) {
+    // Remover clase active de todos
+    document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    // Activar sección
+    document.querySelector(`.menu-link[data-section="${section}"]`)?.classList.add('active');
+    document.getElementById(section)?.classList.add('active');
+    // Actualizar datos según sección
+    if (section === 'dashboard') {
+        updateDashboard();
+    } else if (section === 'viviendas') {
+        ensureMap();
+        renderViviendas();
+    } else if (section === 'noticias') {
+        renderNoticias();
+    } else if (section === 'contactos') {
+        renderContactos();
+    } else if (section === 'transacciones') {
+        renderTransacciones();
+        updateTransaccionesSelect();
+    }
+}
+// Limpiar listeners previos si existieran
+document.querySelectorAll('.menu-link').forEach(link => {
+    const clone = link.cloneNode(true);
+    link.parentNode.replaceChild(clone, link);
+});
+// Registrar nuevo listener
 document.querySelectorAll('.menu-link').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Remover clase active de todos
-        document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        
-        // Agregar clase active al clickeado
-        this.classList.add('active');
         const section = this.getAttribute('data-section');
-        document.getElementById(section).classList.add('active');
-        
-        // Actualizar datos según la sección
-        if (section === 'dashboard') {
-            updateDashboard();
-        } else if (section === 'viviendas') {
-            renderViviendas();
-        } else if (section === 'noticias') {
-            renderNoticias();
-        } else if (section === 'contactos') {
-            renderContactos();
-        } else if (section === 'transacciones') {
-            renderTransacciones();
-            updateTransaccionesSelect();
-        }
+        handleSectionNavigation(section);
     });
+});
+// Inicializar sección activa en carga
+window.addEventListener('DOMContentLoaded', () => {
+    // Verificar Leaflet cargado
+    if (typeof L === 'undefined') {
+        console.error('Leaflet no se cargó. Revisa la etiqueta <script> y la conexión a internet.');
+        showMessage('Error cargando el mapa (Leaflet).', 'error');
+    }
+    const activeLink = document.querySelector('.menu-link.active');
+    const initialSection = activeLink ? activeLink.getAttribute('data-section') : 'dashboard';
+    handleSectionNavigation(initialSection);
 });
 
 // ============================================
@@ -194,11 +206,15 @@ function updateDashboard() {
 
 document.getElementById('viviendasForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+    if (!document.getElementById('vivLat').value || !document.getElementById('vivLng').value) {
+        showMessage('Selecciona una ubicación en el mapa', 'error');
+        return;
+    }
     const vivienda = {
         titulo: document.getElementById('vivTitulo').value,
         precio: document.getElementById('vivPrecio').value,
-        ubicacion: document.getElementById('vivUbicacion').value,
+        lat: parseFloat(document.getElementById('vivLat').value),
+        lng: parseFloat(document.getElementById('vivLng').value),
         habitaciones: document.getElementById('vivHabitaciones').value,
         banos: document.getElementById('vivBanos').value,
         area: document.getElementById('vivArea').value,
@@ -206,9 +222,9 @@ document.getElementById('viviendasForm').addEventListener('submit', function(e) 
         estado: document.getElementById('vivEstado').value,
         descripcion: document.getElementById('vivDescripcion').value
     };
-    
     db.addVivienda(vivienda);
     this.reset();
+    if (marker) { map.removeLayer(marker); marker = null; }
     renderViviendas();
     showMessage('Vivienda agregada exitosamente', 'success');
 });
@@ -216,18 +232,16 @@ document.getElementById('viviendasForm').addEventListener('submit', function(e) 
 function renderViviendas() {
     const viviendas = db.getViviendas();
     const tbody = document.getElementById('viviendasBody');
-    
     if (viviendas.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No hay viviendas registradas</td></tr>';
         return;
     }
-    
     tbody.innerHTML = viviendas.map(v => `
         <tr>
             <td>${v.id}</td>
             <td>${v.titulo}</td>
             <td>$${parseFloat(v.precio).toLocaleString()}</td>
-            <td>${v.ubicacion}</td>
+            <td>${v.lat}, ${v.lng}</td>
             <td><span class="status-badge status-${v.tipo}">${v.tipo.toUpperCase()}</span></td>
             <td>${v.estado}</td>
             <td>
@@ -251,34 +265,37 @@ function deleteViviendaConfirm(id) {
 function editVivienda(id) {
     const viviendas = db.getViviendas();
     const vivienda = viviendas.find(v => v.id === id);
-    
     if (vivienda) {
         document.getElementById('vivTitulo').value = vivienda.titulo;
         document.getElementById('vivPrecio').value = vivienda.precio;
-        document.getElementById('vivUbicacion').value = vivienda.ubicacion;
+        document.getElementById('vivLat').value = vivienda.lat;
+        document.getElementById('vivLng').value = vivienda.lng;
         document.getElementById('vivHabitaciones').value = vivienda.habitaciones;
         document.getElementById('vivBanos').value = vivienda.banos;
         document.getElementById('vivArea').value = vivienda.area;
         document.getElementById('vivTipo').value = vivienda.tipo;
         document.getElementById('vivEstado').value = vivienda.estado;
         document.getElementById('vivDescripcion').value = vivienda.descripcion;
-        
-        // Cambiar el botón a "Actualizar"
+        ensureMap();
+        if (map) {
+            map.setView([vivienda.lat, vivienda.lng], 14);
+            setMarker(vivienda.lat, vivienda.lng);
+        }
         const form = document.getElementById('viviendasForm');
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.textContent = 'Actualizar Vivienda';
-        
-        // Guardar el ID para actualizar
         form.dataset.editId = id;
-        
-        // Cambiar el evento del formulario
         form.onsubmit = function(e) {
             e.preventDefault();
-            
+            if (!document.getElementById('vivLat').value || !document.getElementById('vivLng').value) {
+                showMessage('Selecciona una ubicación en el mapa', 'error');
+                return;
+            }
             const vivienda = {
                 titulo: document.getElementById('vivTitulo').value,
                 precio: document.getElementById('vivPrecio').value,
-                ubicacion: document.getElementById('vivUbicacion').value,
+                lat: parseFloat(document.getElementById('vivLat').value),
+                lng: parseFloat(document.getElementById('vivLng').value),
                 habitaciones: document.getElementById('vivHabitaciones').value,
                 banos: document.getElementById('vivBanos').value,
                 area: document.getElementById('vivArea').value,
@@ -286,16 +303,15 @@ function editVivienda(id) {
                 estado: document.getElementById('vivEstado').value,
                 descripcion: document.getElementById('vivDescripcion').value
             };
-            
             db.updateVivienda(id, vivienda);
             form.reset();
             submitBtn.textContent = 'Agregar Vivienda';
             delete form.dataset.editId;
             form.onsubmit = null;
+            if (marker) { map.removeLayer(marker); marker = null; }
             renderViviendas();
             showMessage('Vivienda actualizada exitosamente', 'success');
         };
-        
         window.scrollTo(0, 0);
     }
 }
@@ -404,9 +420,8 @@ function deleteContactoConfirm(id) {
 function updateTransaccionesSelect() {
     const viviendas = db.getViviendas();
     const select = document.getElementById('tranVivienda');
-    
     select.innerHTML = '<option value="">Seleccionar...</option>' + 
-        viviendas.map(v => `<option value="${v.id}">${v.titulo} - ${v.ubicacion}</option>`).join('');
+        viviendas.map(v => `<option value="${v.id}">${v.titulo} - (${v.lat}, ${v.lng})</option>`).join('');
 }
 
 document.getElementById('transaccionesForm').addEventListener('submit', function(e) {
@@ -475,6 +490,81 @@ function showMessage(message, type = 'info') {
         messageBox.remove();
     }, 3000);
 }
+
+// ============================================
+// MAPA LEAFLET PARA SELECCIONAR COORDENADAS
+// ============================================
+let map, marker;
+function initMap() {
+    const mapDiv = document.getElementById('mapSelector');
+    if (!mapDiv) return; // Solo si existe
+    map = L.map('mapSelector').setView([25.7617, -80.1918], 10); // Vista inicial
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    map.on('click', function(e) {
+        const { lat, lng } = e.latlng;
+        setMarker(lat, lng);
+    });
+}
+function ensureMap() {
+    const mapDiv = document.getElementById('mapSelector');
+    if (!mapDiv) return;
+    if (!map) {
+        initMap();
+    }
+    // Forzar recalculo de tamaño después de que la sección se muestra
+    setTimeout(() => { if (map) map.invalidateSize(); }, 100);
+}
+function setMarker(lat, lng) {
+    if (marker) {
+        marker.setLatLng([lat, lng]);
+    } else {
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        marker.on('dragend', function(e) {
+            const pos = e.target.getLatLng();
+            document.getElementById('vivLat').value = pos.lat.toFixed(6);
+            document.getElementById('vivLng').value = pos.lng.toFixed(6);
+        });
+    }
+    document.getElementById('vivLat').value = lat.toFixed(6);
+    document.getElementById('vivLng').value = lng.toFixed(6);
+}
+
+// QUITAR llamada inicial para evitar crear mapa oculto
+// initMap();
+
+// Actualizar listener de navegación (ya existente) para llamar ensureMap cuando sección viviendas
+document.querySelectorAll('.menu-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remover clase active de todos
+        document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        
+        // Agregar clase active al clickeado
+        this.classList.add('active');
+        const section = this.getAttribute('data-section');
+        document.getElementById(section).classList.add('active');
+        
+        // Actualizar datos según la sección
+        if (section === 'dashboard') {
+            updateDashboard();
+        } else if (section === 'viviendas') {
+            ensureMap();
+            renderViviendas();
+        } else if (section === 'noticias') {
+            renderNoticias();
+        } else if (section === 'contactos') {
+            renderContactos();
+        } else if (section === 'transacciones') {
+            renderTransacciones();
+            updateTransaccionesSelect();
+        }
+    });
+});
 
 // Inicializar dashboard al cargar
 updateDashboard();
