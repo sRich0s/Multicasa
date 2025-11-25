@@ -87,6 +87,42 @@ def admin_panel():
 def mapa_viviendas():
     return render_template('mapa-viviendas.html')
 
+@app.route('/compra')
+def compra():
+    return render_template('compra.html')
+
+@app.route('/company')
+def company():
+    return render_template('main.html')
+
+@app.route('/services')
+def services():
+    return render_template('main.html')
+
+@app.route('/requirements')
+def requirements():
+    return render_template('main.html')
+
+@app.route('/contacts')
+def contacts():
+    return render_template('main.html')
+
+@app.route('/construir')
+def construir():
+    return render_template('construir.html')
+
+@app.route('/venta')
+def venta():
+    return render_template('venta.html')
+
+@app.route('/mudanzas')
+def mudanzas():
+    return render_template('mudanzas.html')
+
+@app.route('/seguros')
+def seguros():
+    return render_template('seguros.html')    
+
 # =============================================
 # API VIVIENDAS
 # =============================================

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra - Bienes Raíces MultiCasa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- ENCABEZADO SUPERIOR -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1 class="logo">BIENES RAICES MULTICASA</h1>
+                <p class="subtitle">Tu mejor opción en propiedades</p>
+            </div>
+            <div class="header-right">
+                <button class="call-button">LLAMAR: 1-800-123-4567</button>
+            </div>
+        </header>
+
+        <!-- NAVEGACIÓN SECUNDARIA -->
+        <nav class="secondary-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('company') }}">La Compañía</a></li>
+                <li><a href="{{ url_for('services') }}">Servicios</a></li>
+                <li><a href="{{ url_for('requirements') }}">Requisitos</a></li>
+                <li><a href="{{ url_for('contacts') }}">Contactos</a></li>
+            </ul>
+        </nav>
+
+        <!-- BANNER PRINCIPAL -->
+        <div class="banner">
+            <div class="banner-content">
+                <h2>BIENVENIDO a nuestro sitio WEB de MultiCasa!</h2>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN PRINCIPAL -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('company') }}">La Compañía</a></li>
+                <li><a href="{{ url_for('services') }}">Servicios</a></li>
+                <li><a href="{{ url_for('requirements') }}">Requisitos</a></li>
+                <li><a href="{{ url_for('contacts') }}">Contactos</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="main-content">
+            <div class="left-column">
+                <h2>Propiedades en Venta</h2>
+                <p>Encuentra las viviendas disponibles en este momento. Haz clic en "Contactar" para enviarnos tu interés y un asesor se pondrá en contacto.</p>
+
+                <div class="services-section" style="margin-top:12px;">
+                    <div class="cards-grid">
+                        <article class="card">
+                            <img src="https://via.placeholder.com/420x240?text=Casa+Moderna" alt="Casa Moderna">
+                            <div class="card-body">
+                                <h4>Casa Moderna en Colinas</h4>
+                                <p>3 recámaras · 2 baños · 250 m² · $320,000</p>
+                                <a href="{{ url_for('contacts') }}#contactos" class="btn">Contactar</a>
+                            </div>
+                        </article>
+
+                        <article class="card">
+                            <img src="https://via.placeholder.com/420x240?text=Apartamento+Centro" alt="Apartamento Centro">
+                            <div class="card-body">
+                                <h4>Apartamento en Centro</h4>
+                                <p>2 recámaras · 1 baño · 90 m² · $120,000</p>
+                                <a href="{{ url_for('contacts') }}#contactos" class="btn">Contactar</a>
+                            </div>
+                        </article>
+
+                        <article class="card">
+                            <img src="https://via.placeholder.com/420x240?text=Villa+Vista+Mar" alt="Villa Vista Mar">
+                            <div class="card-body">
+                                <h4>Villa con Vista al Mar</h4>
+                                <p>5 recámaras · 4 baños · 600 m² · $980,000</p>
+                                <a href="{{ url_for('contacts') }}#contactos" class="btn">Contactar</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div style="margin-top:18px;">
+                    <h3>Contacto rápido</h3>
+                    <p>Si prefieres, envíanos un correo a <a href="mailto:info@multicasa.mx">info@multicasa.mx</a> indicando la propiedad de interés y tus datos.</p>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="right-column">
+                <div class="sidebar-menu">
+                    <ul>
+                        <li><a href="{{ url_for('compra') }}">COMPRA</a></li>
+                        <li><a href="{{ url_for('construir') }}">CONSTRUIR</a></li>
+                        <li><a href="{{ url_for('venta') }}">VENTA</a></li>
+                        <li><a href="{{ url_for('mudanzas') }}">MUDANZAS</a></li>
+                        <li><a href="{{ url_for('seguros') }}">SEGUROS</a></li>
+                        <li><a href="{{ url_for('contacts') }}">CONTACTOS</a></li>
+                    </ul>
+                </div>
+
+                <!-- FORMULARIO DE BÚSQUEDA -->
+                <div class="search-form">
+                    <h4>FILTRAR VIVIENDAS 🔎</h4>
+                    <form id="searchForm">
+                        <div class="form-group uniform-field">
+                            <label for="fEstado">Estado:</label>
+                            <select id="fEstado" name="fEstado">
+                                <option value="">Cualquiera</option>
+                                <option value="disponible">Disponible</option>
+                                <option value="vendida">Vendida</option>
+                                <option value="alquilada">Alquilada</option>
+                            </select>
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fMinPrecio">Precio Mínimo ($):</label>
+                            <input type="number" id="fMinPrecio" name="fMinPrecio" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fMaxPrecio">Precio Máximo ($):</label>
+                            <input type="number" id="fMaxPrecio" name="fMaxPrecio" min="0" placeholder="500000">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fHabitaciones">Habitaciones mín.:</label>
+                            <input type="number" id="fHabitaciones" name="fHabitaciones" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fBanos">Baños mín.:</label>
+                            <input type="number" id="fBanos" name="fBanos" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fArea">Área mín. (m²):</label>
+                            <input type="number" id="fArea" name="fArea" min="0" placeholder="0">
+                        </div>
+                        <button type="submit" class="search-button">BUSCAR</button>
+                    </form>
+                    <div id="searchResults" style="margin-top:15px; font-size:13px;"></div>
+                </div>
+
+                <!-- Noticias -->
+                <div class="news-block">
+                    <h4>INFORMACIÓN DE ÚLTIMA HORA</h4>
+                    <ul class="news-list">
+                        <li><a href="#news1">Nuevas propiedades disponibles en Miami</a></li>
+                        <li><a href="#news2">Tasas de interés en mínimos históricos</a></li>
+                        <li><a href="#news3">Promoción especial en apartamentos</a></li>
+                    </ul>
+                </div>
+
+                <!-- CONTADOR DE VISITAS -->
+                <div class="visitor-counter">
+                    <div class="counter-item">
+                        <span class="counter-label">Conectados:</span>
+                        <span class="counter-value" id="connected">01</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-label">Visitas:</span>
+                        <span class="counter-value" id="visits">07890</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PIE DE PÁGINA -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo"><h3>BIENES RAICES MULTICASA</h3></div>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="{{ url_for('admin_login') }}">🔐 Acceso Administrador</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BIENES RAICES MULTICASA. Todos los derechos reservados por JJDreams y Don Donas.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/main.js') }}"></script>
+</body>
+</html>
