@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mudanzas - Bienes Raíces MultiCasa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- ENCABEZADO SUPERIOR -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1 class="logo">BIENES RAICES MULTICASA</h1>
+                <p class="subtitle">Tu mejor opción en propiedades</p>
+            </div>
+            <div class="header-right">
+                <button class="call-button">LLAMAR: 1-800-123-4567</button>
+            </div>
+        </header>
+
+        <!-- NAVEGACIÓN SECUNDARIA -->
+        <nav class="secondary-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('company') }}">La Compañía</a></li>
+                <li><a href="{{ url_for('services') }}">Servicios</a></li>
+                <li><a href="{{ url_for('requirements') }}">Requisitos</a></li>
+                <li><a href="{{ url_for('contacts') }}">Contactos</a></li>
+            </ul>
+        </nav>
+
+        <!-- BANNER PRINCIPAL -->
+        <div class="banner">
+            <div class="banner-content">
+                <h2>BIENVENIDO a nuestro sitio WEB de MultiCasa!</h2>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN PRINCIPAL -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('company') }}">La Compañía</a></li>
+                <li><a href="{{ url_for('services') }}">Servicios</a></li>
+                <li><a href="{{ url_for('requirements') }}">Requisitos</a></li>
+                <li><a href="{{ url_for('contacts') }}">Contactos</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="main-content">
+            <div class="left-column">
+                <h2>Mudanzas Rápidas y Económicas</h2>
+                <p>Ofrecemos paquetes accesibles y servicio rápido para mudanzas locales y de larga distancia. Nuestro equipo está capacitado para embalar, trasladar y montar tus muebles con cuidado.</p>
+
+                <div class="services-section" style="margin-top:12px;">
+                    <ul>
+                        <li><strong>Paquete Económico:</strong> Transporte básico y asistencia del equipo de carga.</li>
+                        <li><strong>Paquete Standard:</strong> Embalaje parcial + seguro base.</li>
+                        <li><strong>Paquete Premium:</strong> Embalaje completo + desmontaje/montaje + seguro ampliado.</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top:16px;">
+                    <h3>¿Cómo solicitar?</h3>
+                    <p>Rellena el formulario de contacto o llámanos al <strong>1-800-123-4567</strong>. Podemos darte una cotización aproximada por teléfono o agendar una visita para evaluación.</p>
+                    <p>También puedes enviar una solicitud detallada a <a href="mailto:info@multicasa.mx">info@multicasa.mx</a>.</p>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="right-column">
+                <div class="sidebar-menu">
+                    <ul>
+                        <li><a href="{{ url_for('compra') }}">COMPRA</a></li>
+                        <li><a href="{{ url_for('construir') }}">CONSTRUIR</a></li>
+                        <li><a href="{{ url_for('venta') }}">VENTA</a></li>
+                        <li><a href="{{ url_for('mudanzas') }}">MUDANZAS</a></li>
+                        <li><a href="{{ url_for('seguros') }}">SEGUROS</a></li>
+                        <li><a href="{{ url_for('contacts') }}">CONTACTOS</a></li>
+                    </ul>
+                </div>
+
+                <!-- FORMULARIO DE BÚSQUEDA -->
+                <div class="search-form">
+                    <h4>FILTRAR VIVIENDAS 🔎</h4>
+                    <form id="searchForm">
+                        <div class="form-group uniform-field">
+                            <label for="fEstado">Estado:</label>
+                            <select id="fEstado" name="fEstado">
+                                <option value="">Cualquiera</option>
+                                <option value="disponible">Disponible</option>
+                                <option value="vendida">Vendida</option>
+                                <option value="alquilada">Alquilada</option>
+                            </select>
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fMinPrecio">Precio Mínimo ($):</label>
+                            <input type="number" id="fMinPrecio" name="fMinPrecio" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fMaxPrecio">Precio Máximo ($):</label>
+                            <input type="number" id="fMaxPrecio" name="fMaxPrecio" min="0" placeholder="500000">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fHabitaciones">Habitaciones mín.:</label>
+                            <input type="number" id="fHabitaciones" name="fHabitaciones" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fBanos">Baños mín.:</label>
+                            <input type="number" id="fBanos" name="fBanos" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group uniform-field">
+                            <label for="fArea">Área mín. (m²):</label>
+                            <input type="number" id="fArea" name="fArea" min="0" placeholder="0">
+                        </div>
+                        <button type="submit" class="search-button">BUSCAR</button>
+                    </form>
+                    <div id="searchResults" style="margin-top:15px; font-size:13px;"></div>
+                </div>
+
+                <!-- Noticias -->
+                <div class="news-block">
+                    <h4>INFORMACIÓN DE ÚLTIMA HORA</h4>
+                    <ul class="news-list">
+                        <li><a href="#news1">Paquetes de mudanza con descuento</a></li>
+                        <li><a href="#news2">Cobertura y seguros para mudanzas</a></li>
+                    </ul>
+                </div>
+
+                <!-- CONTADOR DE VISITAS -->
+                <div class="visitor-counter">
+                    <div class="counter-item">
+                        <span class="counter-label">Conectados:</span>
+                        <span class="counter-value" id="connected">01</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-label">Visitas:</span>
+                        <span class="counter-value" id="visits">07890</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PIE DE PÁGINA -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo"><h3>BIENES RAICES MULTICASA</h3></div>
+                <nav class="footer-nav">
+                    <ul>
+                        <li><a href="{{ url_for('admin_login') }}">🔐 Acceso Administrador</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BIENES RAICES MULTICASA. Todos los derechos reservados por JJDreams y Don Donas.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='JS/main.js') }}"></script>
+</body>
+</html>
