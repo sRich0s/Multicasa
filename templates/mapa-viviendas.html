@@ -12,8 +12,8 @@
     .top-bar-map h1 { margin:0; color:#003366; font-size:22px; justify-self:center; }
     .top-bar-map .back-link a { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:#003366; color:#fff; border-radius:5px; font-weight:bold; font-size:13px; text-decoration:none; box-shadow:0 2px 4px rgba(0,0,0,.15); transition:background .3s, color .3s; }
     .top-bar-map .back-link a:hover { background:#00ccff; color:#003366; }
-    .map-container { margin-top:0; display:flex; gap:20px; }
-    #map { flex:1; height:70vh; border:1px solid #ccc; border-radius:8px; }
+  .map-container { margin-top:0; display:flex; gap:20px; }
+  #map { flex:1; height:60vh; border:1px solid #ccc; border-radius:8px; }
     .filters { width:320px; background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.1); }
     .filters h2 { margin:0 0 10px; font-size:18px; color:#003366; }
     .filters .form-group { margin-bottom:12px; }
@@ -22,8 +22,17 @@
     .filters input:focus,.filters select:focus { outline:none; border-color:#00ccff; box-shadow:0 0 3px rgba(0,204,255,.3); }
     .filters button { width:100%; padding:10px; border:none; border-radius:5px; background:#ff6600; color:#fff; font-weight:bold; cursor:pointer; }
     .filters button:hover { background:#ff5500; }
-    @media (max-width: 900px){ .map-container{ flex-direction:column; } .filters{ width:100%; order:2; } #map{ height:60vh; order:1; } }
-    @media (max-width: 560px){ #map{ height:50vh; } .filters{ padding:12px; } .filters .form-group{ margin-bottom:10px; } }
+    .map-right { flex:1; display:flex; flex-direction:column; gap:10px; }
+    .gallery-panel { background:#fff; padding:10px; border-radius:8px; border:1px solid #ddd; box-shadow:0 2px 4px rgba(0,0,0,.05); max-height:200px; overflow-y:auto; }
+    .gallery-panel h2 { margin:0 0 8px; font-size:16px; color:#003366; }
+    .gallery-grid { display:flex; flex-wrap:wrap; gap:8px; }
+    .gallery-grid img { width:90px; height:70px; object-fit:cover; border-radius:4px; border:1px solid #ccc; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; }
+    .gallery-grid img:hover { transform:scale(1.03); box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  .export-container { margin-top:8px; text-align:right; }
+  .btn-export { padding:6px 12px; border:none; border-radius:4px; background:#003366; color:#fff; font-size:13px; cursor:pointer; font-weight:bold; }
+  .btn-export:hover { background:#00ccff; color:#003366; }
+    @media (max-width: 900px){ .map-container{ flex-direction:column; } .filters{ width:100%; order:2; } .map-right{ order:1; } #map{ height:50vh; } }
+    @media (max-width: 560px){ #map{ height:45vh; } .filters{ padding:12px; } .filters .form-group{ margin-bottom:10px; } }
   </style>
 </head>
 <body>
@@ -69,19 +78,111 @@
           <button type="submit">Aplicar</button>
         </form>
       </div>
-      <div id="map"></div>
+      <div class="map-right">
+        <div id="map"></div>
+        <div id="galeria" class="gallery-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <h2 style="margin:0;">Imágenes de la vivienda</h2>
+            <div class="export-container">
+              <button id="btnExportPdf" class="btn-export" disabled>Exportar PDF</button>
+            </div>
+          </div>
+          <div id="galeriaContenido" class="gallery-grid">
+            <p class="empty-state">Selecciona una vivienda en el mapa para ver sus imágenes.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    let map; let markersLayer=L.layerGroup();
+  let map; let markersLayer=L.layerGroup();
+  let selectedVivienda = null;
     function initMap(){ map=L.map('map').setView([25.7617,-80.1918],10); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map); markersLayer.addTo(map); }
     function fetchViviendas(){ return fetch('/api/viviendas').then(r=>r.json()); }
     function filtrar(viviendas){ const estado=mfEstado.value;  const minP=parseFloat(mfMinPrecio.value)||0; const maxP=parseFloat(mfMaxPrecio.value)||Infinity; const hab=parseInt(mfHabitaciones.value)||0; const ban=parseInt(mfBanos.value)||0; const area=parseInt(mfArea.value)||0; return viviendas.filter(v=> (estado? v.estado===estado : true)  && v.precio>=minP && v.precio<=maxP && v.habitaciones>=hab && v.banos>=ban && v.area>=area); }
-    function renderMarkers(viviendas){ markersLayer.clearLayers(); viviendas.forEach(v=>{ const m=L.marker([v.lat,v.lng]); m.bindPopup(`<strong>${v.titulo}</strong><br>Precio: $${parseFloat(v.precio).toLocaleString()}<br>Estado: ${v.estado} <br>Hab: ${v.habitaciones} · Baños: ${v.banos} · Área: ${v.area} m²`); markersLayer.addLayer(m); }); }
+    function renderMarkers(viviendas){
+      markersLayer.clearLayers();
+      viviendas.forEach(v=>{
+        const m=L.marker([v.lat,v.lng]);
+        m.bindPopup(`<strong>${v.titulo}</strong><br>Precio: $${parseFloat(v.precio).toLocaleString()}<br>Estado: ${v.estado} <br>Hab: ${v.habitaciones} · Baños: ${v.banos} · Área: ${v.area} m²`);
+        m.on('click', ()=>{ selectedVivienda = v; actualizarEstadoExport(); cargarGaleria(v.id, v.titulo); });
+        markersLayer.addLayer(m);
+      });
+    }
+    function actualizarEstadoExport(){
+      const btn=document.getElementById('btnExportPdf');
+      if(!btn) return;
+      btn.disabled = !selectedVivienda;
+    }
+    async function cargarGaleria(viviendaId, titulo){
+      const cont=document.getElementById('galeriaContenido');
+      if(!cont) return;
+      cont.innerHTML='<p class="empty-state">Cargando imágenes...</p>';
+      try{
+        const resp=await fetch(`/api/viviendas/${viviendaId}/imagenes`);
+        if(!resp.ok){ cont.innerHTML='<p class="empty-state">No se pudieron cargar las imágenes.</p>'; return; }
+        const data=await resp.json();
+        const ids=data.ids||[];
+        if(!ids.length){ cont.innerHTML='<p class="empty-state">Esta vivienda no tiene imágenes asociadas.</p>'; return; }
+        cont.innerHTML=ids.map(id=>`<img src="/api/imagenes/${id}" alt="Imagen vivienda ${titulo}" class="galeria-img">`).join('');
+      }catch(e){ console.error(e); cont.innerHTML='<p class="empty-state">Error de red al cargar imágenes.</p>'; }
+    }
+
+    function openLightbox(src){
+      const overlay=document.getElementById('imageLightbox');
+      const img=document.getElementById('lightboxImage');
+      if(!overlay||!img) return;
+      img.src=src;
+      overlay.style.display='flex';
+    }
+
+    function closeLightbox(){
+      const overlay=document.getElementById('imageLightbox');
+      const img=document.getElementById('lightboxImage');
+      if(!overlay||!img) return;
+      img.src='';
+      overlay.style.display='none';
+    }
     async function actualizar(){ const all=await fetchViviendas(); const f=filtrar(all); renderMarkers(f); }
     function precargarParametros(){ const usp=new URLSearchParams(location.search); mfEstado.value=usp.get('estado')||''; mfMinPrecio.value=usp.get('minPrecio')||''; mfMaxPrecio.value=usp.get('maxPrecio')||''; mfHabitaciones.value=usp.get('habitaciones')||''; mfBanos.value=usp.get('banos')||''; mfArea.value=usp.get('area')||''; }
-    document.addEventListener('DOMContentLoaded', ()=>{ initMap(); precargarParametros(); actualizar(); mapFilters.addEventListener('submit', e=>{ e.preventDefault(); actualizar(); }); });
+    document.addEventListener('DOMContentLoaded', ()=>{
+      initMap();
+      precargarParametros();
+      actualizar();
+      mapFilters.addEventListener('submit', e=>{ e.preventDefault(); actualizar(); });
+
+      const overlay=document.getElementById('imageLightbox');
+      const btnClose=document.getElementById('lightboxClose');
+      if(btnClose) btnClose.addEventListener('click', closeLightbox);
+      if(overlay){
+        overlay.addEventListener('click', e=>{ if(e.target===overlay) closeLightbox(); });
+      }
+
+      const galeria=document.getElementById('galeriaContenido');
+      if(galeria){
+        galeria.addEventListener('click', e=>{
+          if(e.target && e.target.classList.contains('galeria-img')){
+            openLightbox(e.target.src);
+          }
+        });
+      }
+
+      const btnExport=document.getElementById('btnExportPdf');
+      if(btnExport){
+        btnExport.addEventListener('click', ()=>{
+          if(!selectedVivienda) return;
+          window.open(`/mapa-viviendas/${selectedVivienda.id}/pdf`, '_blank');
+        });
+      }
+    });
   </script>
+
+  <div id="imageLightbox" style="position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:9999;">
+    <div style="position:relative; max-width:90%; max-height:90%;">
+      <button id="lightboxClose" style="position:absolute; top:-10px; right:-10px; background:#fff; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer; font-weight:bold;">×</button>
+      <img id="lightboxImage" src="" alt="Vista ampliada" style="max-width:100%; max-height:100%; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,.4); background:#fff;">
+    </div>
+  </div>
 </body>
 </html>

@@ -37,7 +37,58 @@
 
   // ================ Handlers ==================
   async function handleEditVivienda(id){ const viviendas=await api.viviendas.list(); const v=viviendas.find(x=>x.id===id); if(!v) return; vivTitulo.value=v.titulo; vivPrecio.value=v.precio; vivLat.value=v.lat; vivLng.value=v.lng; vivHabitaciones.value=v.habitaciones; vivBanos.value=v.banos; vivArea.value=v.area; vivTipo.value=v.tipo; vivEstado.value=v.estado; vivDescripcion.value=v.descripcion; ensureMap(); map&&setMarker(v.lat,v.lng); const form=g('viviendasForm'); const btn=form.querySelector('button[type="submit"]'); btn.textContent='Actualizar Vivienda'; form.dataset.editId=id; form.onsubmit=async e=>{ e.preventDefault(); const upd={ titulo:vivTitulo.value, precio:parseFloat(vivPrecio.value), lat:parseFloat(vivLat.value), lng:parseFloat(vivLng.value), habitaciones:parseInt(vivHabitaciones.value), banos:parseInt(vivBanos.value), area:parseInt(vivArea.value), tipo:vivTipo.value, estado:vivEstado.value, descripcion:vivDescripcion.value }; await api.viviendas.update(id, upd); form.reset(); btn.textContent='Agregar Vivienda'; form.dataset.editId=''; form.onsubmit=viviendasCreateHandler; marker&&map.removeLayer(marker); marker=null; renderViviendas(); updateDashboard(); showMessage('Vivienda actualizada','success'); }; window.scrollTo(0,0); }
-  async function viviendasCreateHandler(e){ e.preventDefault(); if(!vivLat.value||!vivLng.value){showMessage('Selecciona ubicación','error'); return;} const vivienda={ titulo:vivTitulo.value, precio:parseFloat(vivPrecio.value), lat:parseFloat(vivLat.value), lng:parseFloat(vivLng.value), habitaciones:parseInt(vivHabitaciones.value), banos:parseInt(vivBanos.value), area:parseInt(vivArea.value), tipo:vivTipo.value, estado:vivEstado.value, descripcion:vivDescripcion.value }; await api.viviendas.create(vivienda); e.target.reset(); marker&&map.removeLayer(marker); marker=null; renderViviendas(); updateDashboard(); showMessage('Vivienda agregada','success'); }
+  async function viviendasCreateHandler(e){
+    e.preventDefault();
+    if(!vivLat.value||!vivLng.value){
+      showMessage('Selecciona ubicación','error');
+      return;
+    }
+
+    const formEl = e.target;
+    const fd = new FormData();
+
+    fd.append('titulo', vivTitulo.value);
+    fd.append('precio', vivPrecio.value);
+    fd.append('lat', vivLat.value);
+    fd.append('lng', vivLng.value);
+    fd.append('habitaciones', vivHabitaciones.value);
+    fd.append('banos', vivBanos.value);
+    fd.append('area', vivArea.value);
+    fd.append('tipo', vivTipo.value);
+    fd.append('estado', vivEstado.value);
+    fd.append('descripcion', vivDescripcion.value);
+
+    const inputFiles = document.getElementById('vivImagenes');
+    if (inputFiles && inputFiles.files && inputFiles.files.length) {
+      for (let i = 0; i < inputFiles.files.length; i++) {
+        fd.append('imagenes', inputFiles.files[i]);
+      }
+    }
+
+    try {
+      const resp = await fetch('/api/viviendas', {
+        method: 'POST',
+        body: fd
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        console.error('Error creando vivienda', txt);
+        showMessage('Error creando vivienda','error');
+        return;
+      }
+
+      await resp.json();
+      formEl.reset();
+      marker&&map.removeLayer(marker); marker=null;
+      renderViviendas();
+      updateDashboard();
+      showMessage('Vivienda agregada','success');
+    } catch (err) {
+      console.error(err);
+      showMessage('Error de red al crear vivienda','error');
+    }
+  }
   async function noticiasCreateHandler(e){ e.preventDefault(); const noticia={ titulo:notTitulo.value, contenido:notContenido.value }; await api.noticias.create(noticia); e.target.reset(); renderNoticias(); showMessage('Noticia agregada','success'); }
   async function transaccionesCreateHandler(e){ e.preventDefault(); const id=parseInt(tranVivienda.value); const tipoNuevo=tranTipo.value; if(!id||!tipoNuevo){ showMessage('Selecciona vivienda y tipo','error'); return;} await api.transacciones.create({ viviendasId:id, tipoNuevo }); e.target.reset(); renderTransacciones(); updateTransaccionesSelect(); renderViviendas(); updateDashboard(); showMessage('Transacción registrada','success'); }
 
